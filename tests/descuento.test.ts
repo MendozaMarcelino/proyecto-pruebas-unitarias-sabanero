@@ -1,20 +1,28 @@
-import { describe, it, expect } from 'vitest';
-import { CarritoCompras, Producto } from '../src/carrito';
+import { describe, test, expect } from 'vitest';
+import { CarritoCompras } from '../src/carrito';
 
-describe('HU-03: Descuento por volumen de compra', () => {
-  it('CA1: No debería aplicar descuento si el subtotal es menor a $200.000', () => {
+describe('HU-03: Aplicar descuento por volumen', () => {
+  test('CA1: Sin descuento si el subtotal es menor a 200000', () => {
     const carrito = new CarritoCompras();
-    const producto: Producto = { id: 'P01', nombre: 'Queso', stock: 20, precio: 50000 };
-    carrito.agregarProducto(producto, 2); // Subtotal: 100.000
+    const producto = { id: 'P01', nombre: 'Arroz', stock: 10, precio: 100000 };
+    carrito.agregarProducto(producto, 1);
 
     expect(carrito.calcularDescuentoVolumen()).toBe(0);
   });
 
-  it('CA2: Debería aplicar 5% de descuento si el subtotal está entre $200.000 y $500.000', () => {
+  test('CA2: Aplica 5% de descuento si el subtotal es mayor o igual a 200000 y menor a 500000', () => {
     const carrito = new CarritoCompras();
-    const producto: Producto = { id: 'P02', nombre: 'Carne', stock: 20, precio: 50000 };
-    carrito.agregarProducto(producto, 5); // Subtotal: 250.000
+    const producto = { id: 'P01', nombre: 'Televisor', stock: 10, precio: 300000 };
+    carrito.agregarProducto(producto, 1);
 
-    expect(carrito.calcularDescuentoVolumen()).toBe(12500); // 5% de 250.000
+    expect(carrito.calcularDescuentoVolumen()).toBe(15000); // 5% de 300.000
+  });
+
+  test('CA3: Aplica 10% de descuento si el subtotal es mayor o igual a 500000', () => {
+    const carrito = new CarritoCompras();
+    const producto = { id: 'P01', nombre: 'Nevera', stock: 10, precio: 500000 };
+    carrito.agregarProducto(producto, 1);
+
+    expect(carrito.calcularDescuentoVolumen()).toBe(50000); // 10% de 500.000
   });
 });

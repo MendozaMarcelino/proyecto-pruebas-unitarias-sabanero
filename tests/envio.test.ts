@@ -1,22 +1,21 @@
 import { describe, test, expect } from 'vitest';
 import { CarritoCompras } from '../src/carrito';
 
-describe('HU-05: Calcular costo de envío', () => {
-  test('CA1: Envío gratis si el subtotal es mayor o igual a 100000', () => {
-    const carrito = new CarritoCompras();
-    carrito.subtotal = 120000;
+describe('HU-05: Calcular el envío', () => {
+  test('CA1: Cobrar $8.000 para Sincelejo y $15.000 para otros municipios', () => {
+    const carrito1 = new CarritoCompras();
+    carrito1.agregarProducto({ id: 'P01', nombre: 'Sal', precio: 5000, tarifaIva: 0, stock: 10 }, 1);
+    expect(carrito1.calcularCostoEnvio('Sincelejo')).toBe(8000);
 
-    carrito.calcularEnvio();
-
-    expect(carrito.costoEnvio).toBe(0);
+    const carrito2 = new CarritoCompras();
+    carrito2.agregarProducto({ id: 'P01', nombre: 'Sal', precio: 5000, tarifaIva: 0, stock: 10 }, 1);
+    expect(carrito2.calcularCostoEnvio('Corozal')).toBe(15000);
   });
 
-  test('CA2: Costo de envío estándar (10000) si el subtotal es menor a 100000', () => {
+  test('CA2: Envío gratis si los productos con IVA suman $150.000 o más', () => {
     const carrito = new CarritoCompras();
-    carrito.subtotal = 50000;
+    carrito.agregarProducto({ id: 'P01', nombre: 'Licuadora', precio: 180000, tarifaIva: 0.19, stock: 10 }, 1);
 
-    carrito.calcularEnvio();
-
-    expect(carrito.costoEnvio).toBe(10000);
+    expect(carrito.calcularCostoEnvio('Sincelejo')).toBe(0);
   });
 });
