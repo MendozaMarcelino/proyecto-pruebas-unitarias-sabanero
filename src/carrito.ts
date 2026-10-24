@@ -42,6 +42,12 @@ public aplicarCupon(codigo: string): void {
   }
 }
 
+public puntosGanados: number = 0;
+
+public calcularPuntos(): void {
+  this.puntosGanados = Math.floor(this.subtotal / 1000);
+}
+
 public costoEnvio: number = 0;
 
 public calcularEnvio(): void {
