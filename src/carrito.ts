@@ -22,4 +22,36 @@ export class CarritoCompras {
   public obtenerItems(): ItemCarrito[] {
     return this.items;
   }
+
+  public calcularIVA(tasaIVA: number): number {
+    let subtotal = 0;
+    for (const item of this.items) {
+      subtotal += item.producto.precio * item.cantidad;
+    }
+    return subtotal * tasaIVA;
+  }
+
+public subtotal: number = 0;
+public descuentoCupon: number = 0;
+
+public aplicarCupon(codigo: string): void {
+  if (codigo === 'SABANERO10' && this.subtotal >= 50000) {
+    this.descuentoCupon = this.subtotal * 0.10;
+  } else {
+    this.descuentoCupon = 0;
+  }
+}
+  public calcularDescuentoVolumen(): number {
+  let subtotal = 0;
+  for (const item of this.items) {
+    subtotal += item.producto.precio * item.cantidad;
+  }
+
+  if (subtotal >= 500000) {
+    return subtotal * 0.10; // 10% de descuento
+  } else if (subtotal >= 200000) {
+    return subtotal * 0.05; // 5% de descuento
+  }
+  return 0;
+}
 }
