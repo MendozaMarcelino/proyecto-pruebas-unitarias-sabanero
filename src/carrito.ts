@@ -41,6 +41,16 @@ public aplicarCupon(codigo: string): void {
     this.descuentoCupon = 0;
   }
 }
+
+public costoEnvio: number = 0;
+
+public calcularEnvio(): void {
+  if (this.subtotal >= 100000) {
+    this.costoEnvio = 0;
+  } else {
+    this.costoEnvio = 10000;
+  }
+}
   public calcularDescuentoVolumen(): number {
   let subtotal = 0;
   for (const item of this.items) {
